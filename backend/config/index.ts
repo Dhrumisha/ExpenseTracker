@@ -38,3 +38,13 @@ export const passwordResetToken = async () => {
     const resetToken = crypto.randomBytes(32).toString("hex");
     return resetToken;
 }
+
+export const getMonthName = (index: number) => {
+   const months = [
+    "January", "February", "March", "April",
+    "May", "June", "July", "August", "September",
+    "October", "November", "December"
+   ];
+
+   return months[index];
+}
