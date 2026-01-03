@@ -1,0 +1,3 @@
+# Optional: map friendly path to Netlify Function
+# This lets you use https://<your-site> /health/deploy instead of /.netlify/functions/health-deploy
+/health/deploy    /.netlify/functions/health-deploy    200
