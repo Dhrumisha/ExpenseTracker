@@ -42,7 +42,7 @@ export default function ForgotPasswordPage() {
         {({ values, handleSubmit }) => (
           <form
             onSubmit={handleSubmit}
-            className="w-full max-w-md rounded-lg bg-white p-6 shadow"
+            className="w-full max-w-md rounded-lg bg-surface p-6 shadow"
           >
             <h1 className="mb-2 text-2xl font-semibold text-center">
               Forgot Password

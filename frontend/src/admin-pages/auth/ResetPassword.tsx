@@ -41,7 +41,7 @@ export default function ResetPasswordPage() {
   if (!token) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-red-600 text-lg">Invalid reset password link</p>
+        <p className="text-expense text-lg">Invalid reset password link</p>
       </div>
     );
   }
@@ -65,7 +65,7 @@ export default function ResetPasswordPage() {
         {({ values, handleSubmit }) => (
           <form
             onSubmit={handleSubmit}
-            className="w-full max-w-md rounded-lg bg-white p-6 shadow"
+            className="w-full max-w-md rounded-lg bg-surface p-6 shadow"
           >
             <h1 className="mb-4 text-2xl font-semibold text-center">
               Reset Password

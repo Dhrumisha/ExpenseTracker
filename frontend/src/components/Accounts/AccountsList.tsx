@@ -1,17 +1,28 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Account } from "@/types/Dashboard/account.types";
+import { Account } from "@/types/account/account.types";
 import { AccountIcon } from "@/components/Accounts/AccountIcon";
+import { maskedNumber } from "@/admin-pages/AccountPage/common/HelperNumberFunction";
+import Link from "next/link";
+import { ROUTES } from "@/admin-pages/routes";
 
 export default function AccountsList({ data }: { data: Account[] }) {
   return (
     <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg">Accounts</CardTitle>
-        <p className="text-sm text-muted-foreground">
+      <CardHeader className="pb-3 flex items-start justify-between w-full">
+        <div>
+          <CardTitle className="text-lg">Accounts</CardTitle>
+          <p className="text-sm text-muted-foreground">Account Information</p>
+        </div>
+        <div>
+        <Link
+          className="text-sm text-purple-500"
+          href={ROUTES.admin.accounts}
+        >
           View all your accounts
-        </p>
+        </Link>
+        </div>
       </CardHeader>
 
       <CardContent className="space-y-4">
@@ -22,12 +33,12 @@ export default function AccountsList({ data }: { data: Account[] }) {
           >
             {/* Left */}
             <div className="flex items-center gap-3">
-              <AccountIcon type={account.type} />
+              <AccountIcon type={account.acc_name} />
 
               <div>
-                <p className="font-medium">{account.name}</p>
+                <p className="font-medium">{account.acc_name}</p>
                 <p className="text-sm text-muted-foreground">
-                  {account.number}
+                  {maskedNumber(account.acc_number)}
                 </p>
               </div>
             </div>
@@ -35,11 +46,9 @@ export default function AccountsList({ data }: { data: Account[] }) {
             {/* Right */}
             <div className="text-right">
               <p className="font-semibold">
-                GHS {account.balance.toLocaleString()}
+                ₹ {account.acc_balance.toLocaleString()}
               </p>
-              <p className="text-xs text-muted-foreground">
-                Account Balance
-              </p>
+              <p className="text-xs text-muted-foreground">Account Balance</p>
             </div>
           </div>
         ))}

@@ -1,9 +1,12 @@
-import React from 'react'
+"use client";
 
-const Accounts = () => {
+import AccountPage from "@/admin-pages/AccountPage";
+import React from "react";
+
+export default function Account() {
   return (
-    <div>Account Page</div>
-  )
+    <>
+      <AccountPage />
+    </>
+  );
 }
-
-export default Accounts

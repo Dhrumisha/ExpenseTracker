@@ -20,7 +20,7 @@ export default function Navbar() {
 
   return (
     <header
-      className="sticky top-0 z-50 border-b bg-white/80 dark:bg-background/80 backdrop-blur">
+      className="sticky top-0 z-50 border-b bg-[var(--card)]/80 dark:bg-[var(--background)]/80 backdrop-blur">
       <nav className="mx-auto flex h-16 items-center justify-between px-6">
         {/* LEFT – LOGO */}
         <motion.div

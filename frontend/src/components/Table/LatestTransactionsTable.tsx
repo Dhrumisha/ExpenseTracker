@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "./DataTable";
-import { Transaction } from "@/components/Table/types";
+import { Transaction } from "@/types/transaction/transaction.types";
 import { cn } from "@/lib/utils";
 import StatusBadge from "../Badge/StatusBadge";
 
@@ -33,7 +33,7 @@ const columns: ColumnDef<Transaction>[] = [
         <span
           className={cn(
             "font-medium",
-            type === "Income" ? "text-green-600" : "text-red-600"
+            type === "Income" ? "text-income" : "text-expense"
           )}
         >
           ₹{amount.toLocaleString()}

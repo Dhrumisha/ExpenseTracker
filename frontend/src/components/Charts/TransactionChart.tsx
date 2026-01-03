@@ -15,7 +15,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 
 export interface TransactionItem  {
-  month: string;
+  label: string;
   income: number;
   expense: number;
 }
@@ -51,7 +51,7 @@ export default function TransactionChart({ data }: { data: TransactionItem[]  })
                 stroke="hsl(var(--border))"
                 strokeDasharray="3 3"
               />
-              <XAxis dataKey="month" />
+              <XAxis dataKey="label" />
               <YAxis />
               <Tooltip />
               <Line
@@ -73,7 +73,7 @@ export default function TransactionChart({ data }: { data: TransactionItem[]  })
                 stroke="hsl(var(--border))"
                 strokeDasharray="3 3"
               />
-              <XAxis dataKey="month" />
+              <XAxis dataKey="label" />
               <YAxis />
               <Tooltip />
               <Bar

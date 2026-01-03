@@ -2,6 +2,7 @@ import axios from "axios";
 import { MeResponse, SignUpFormType } from "@/types/auth/auth.types";
 import axiosInstance from "@/utils/axios";
 import { ChangePasswordValues } from "@/types/user/user.types";
+import { toast } from "react-toastify";
 
 export interface SignUpResponse {
   message: string;
@@ -51,10 +52,10 @@ export async function SignInForm(
       `${process.env.NEXT_PUBLIC_BASE_URL}/auth/sign-in`,
       payload
     );
-    console.log("response", res);
     return res.data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.message || "Error during sign up");
+
+    throw toast.error(error?.response?.data?.message || "Error during sign in");
   }
 }
 
@@ -68,7 +69,7 @@ export const forgotPassword = async (payload: {
     );
     return data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.message || "Error during sign up");
+    throw toast.error(error?.response?.data?.message || "Error during sign up");
   }
 };
 
@@ -79,11 +80,15 @@ export const resetPassword = async (
     passwordConfirm: string;
   }
 ) => {
+  try {
   const { data } = await axios.put(
     `${process.env.NEXT_PUBLIC_BASE_URL}/user/reset-password/${token}`,
     payload
   );
   return data;
+  } catch (error: any) {
+    throw toast.error(error?.response?.data?.message || "Error during password reset");
+  }
 };
 
 export const getMe = async (): Promise<MeResponse> => {
@@ -91,7 +96,7 @@ export const getMe = async (): Promise<MeResponse> => {
     const { data } = await axiosInstance.get<MeResponse>("/user/me");
     return data;
   } catch (error: any) {
-    throw new Error(error?.response?.data?.message || "Unauthorized");
+    throw toast.error(error?.response?.data?.message || "Unauthorized");
   }
 };
 
@@ -99,18 +104,22 @@ export const logoutUser = async () => {
   try {
     await axiosInstance.post("/auth/logout");
   } catch (error: any) {
-    throw new Error(error?.response?.data?.message || "Logout failed");
+    throw toast.error(error?.response?.data?.message || "Logout failed");
   }
 };
 
 export const ChangePassword = async (
   payload: ChangePasswordValues
 ) => {
-  const { data } = await axiosInstance.put(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/user/change-password`,
-    payload
-  );
-  return data;
+  try {
+    const { data } = await axiosInstance.put(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/user/change-password`,
+      payload
+    );
+    return data;
+  } catch (error: any) {
+    throw toast.error(error?.response?.data?.message || "Error during password change");
+  }
 };
 
 export default { SignUpForm, SignInForm };

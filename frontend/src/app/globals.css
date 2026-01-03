@@ -116,9 +116,9 @@
   --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
   --sidebar-border: hsl(240 3.7% 15.9%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
-  --income: 74 222 128;   /* emerald-400 */
-  --expense: 248 113 113; /* red-400 */
-  --balance: 129 140 248;/* indigo-400 */
+    --income: 34 197 94;   /* emerald-400 */
+    --expense: 248 113 113; /* red-400 */
+    --balance: 129 140 248;/* indigo-400 */
 }
 
 @layer base {
@@ -128,4 +128,41 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer utilities {
+  /* Theme surface utilities using CSS variables (respect dark mode via :root/.dark) */
+  .bg-surface { background-color: var(--card); }
+  .text-foreground { color: var(--foreground); }
+  .text-muted-foreground { color: var(--muted-foreground); }
+  .border-border { border-color: var(--border); }
+  .container-centered { max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+
+  /* Income/Expense theme utilities (use --income / --expense RGB tokens) */
+  .text-income { color: rgb(var(--income)); }
+  .text-expense { color: rgb(var(--expense)); }
+
+  /* Solid background helpers */
+  .bg-income { background-color: rgb(var(--income)); }
+  .bg-expense { background-color: rgb(var(--expense)); }
+
+  /* Subtle background helpers (alpha-based) */
+  .bg-income-100 { background-color: rgb(var(--income) / 0.12); }
+  .bg-expense-100 { background-color: rgb(var(--expense) / 0.12); }
+
+  /* Slightly stronger background for dark mode */
+  .dark .bg-income-weak { background-color: rgb(var(--income) / 0.18); }
+  .dark .bg-expense-weak { background-color: rgb(var(--expense) / 0.18); }
+
+  /* Strong text helpers for badges/labels */
+  .text-income-strong { color: rgb(var(--income)); }
+  .text-expense-strong { color: rgb(var(--expense)); }
+
+  /* Border helpers */
+  .border-income { border-color: rgb(var(--income)); }
+  .border-expense { border-color: rgb(var(--expense)); }
+
+  /* Dot/icon backgrounds */
+  .bg-income-dot { background-color: rgb(var(--income)); }
+  .bg-expense-dot { background-color: rgb(var(--expense)); }
 }

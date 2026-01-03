@@ -17,34 +17,34 @@ const STATUS_CONFIG: Record<
   { bg: string; text: string; border: string }
 > = {
   Active: {
-    bg: "bg-green-100 dark:bg-green-900/30",
-    text: "text-green-700 dark:text-green-400",
-    border: "border-green-300 dark:border-green-800",
+    bg: "bg-income-100 dark:bg-income-weak",
+    text: "text-income-strong",
+    border: "border-income",
   },
-  Inactive: {
-    bg: "bg-red-100 dark:bg-red-900/30",
-    text: "text-red-700 dark:text-red-400",
-    border: "border-red-300 dark:border-red-800",
+  completed: {
+    bg: "bg-income-100 dark:bg-income-weak",
+    text: "text-income-strong",
+    border: "border-income",
   },
-  Success: {
-    bg: "bg-green-100 dark:bg-green-900/30",
-    text: "text-green-700 dark:text-green-400",
-    border: "border-green-300 dark:border-green-800",
+  success: {
+    bg: "bg-income-100 dark:bg-income-weak",
+    text: "text-income-strong",
+    border: "border-income",
   },
-  Failed: {
-    bg: "bg-red-100 dark:bg-red-900/30",
-    text: "text-red-700 dark:text-red-400",
-    border: "border-red-300 dark:border-red-800",
+  failed: {
+    bg: "bg-expense-100 dark:bg-expense-weak",
+    text: "text-expense-strong",
+    border: "border-expense",
   },
-  Income: {
-    bg: "bg-blue-100 dark:bg-blue-900/30",
-    text: "text-blue-700 dark:text-blue-400",
-    border: "border-blue-300 dark:border-blue-800",
+  income: {
+    bg: "bg-income-100 dark:bg-income-weak",
+    text: "text-income-strong",
+    border: "border-income",
   },
-  Expense: {
-    bg: "bg-orange-100 dark:bg-orange-900/30",
-    text: "text-orange-700 dark:text-orange-400",
-    border: "border-orange-300 dark:border-orange-800",
+  expense: {
+    bg: "bg-expense-100 dark:bg-expense-weak",
+    text: "text-expense-strong",
+    border: "border-expense",
   },
 };
 

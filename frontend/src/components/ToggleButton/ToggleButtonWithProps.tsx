@@ -46,7 +46,7 @@ export const ToggleButtonWithProps: React.FC<IToggleButtonProps> = ({
           className={cn("inline-flex pr-2 align-middle font-semibold text-base", labelClassName)}
         >
           {label}
-          {asterisk && <span className="text-red-500 ml-1">*</span>}
+          {asterisk && <span className="text-expense ml-1">*</span>}
         </label>
       )}
 

@@ -19,7 +19,7 @@ export function AccountIcon({ type }: { type: string }) {
       );
     case "cash":
       return (
-        <div className={`${base} bg-red-500`}>
+        <div className={`${base} bg-expense`}>
           <DollarSign size={18} />
         </div>
       );

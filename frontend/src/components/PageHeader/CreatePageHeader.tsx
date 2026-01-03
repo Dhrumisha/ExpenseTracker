@@ -80,7 +80,7 @@ const CreatePageHeader = ({
               icon={<ArrowLeft className="size-4" />}
               variant="link"
               onClick={onNavigate}
-              size="xs"
+              size="default"
             >
               Back
             </ButtonWithProps>
@@ -91,7 +91,7 @@ const CreatePageHeader = ({
                 className="bg-none hover:bg-gray-100"
                 icon={<ArrowLeft className="size-4" />}
                 variant="link"
-                size="xs"
+                size="default"
               >
                 Back
               </ButtonWithProps>

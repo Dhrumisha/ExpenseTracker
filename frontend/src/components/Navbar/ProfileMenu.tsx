@@ -68,7 +68,7 @@ export function ProfileMenu() {
 
         <DropdownMenuItem
           onClick={handleLogout}
-          className="text-red-600 focus:text-red-600"
+          className="text-expense focus:text-expense"
         >
           <LogOut className="mr-2 h-4 w-4" />
           Logout

@@ -21,10 +21,7 @@ export default function SignIn() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const {
-    mutate: signInMutation,
-    isPending
-  } = useMutation({
+  const { mutate: signInMutation, isPending } = useMutation({
     mutationFn: SignInForm,
     onSuccess: (data) => {
       toast.success(data.message);
@@ -37,8 +34,6 @@ export default function SignIn() {
           email: data.data.email,
         })
       );
-
-      
     },
   });
 
@@ -57,7 +52,7 @@ export default function SignIn() {
         {({ values, handleSubmit }) => (
           <form
             onSubmit={handleSubmit}
-            className="w-full max-w-md rounded-lg bg-white p-6 shadow"
+            className="w-full max-w-md rounded-lg bg-surface p-6 shadow"
           >
             <h1 className="mb-4 text-2xl font-semibold text-center">Sign In</h1>
 

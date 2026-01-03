@@ -61,7 +61,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-background border rounded-md shadow-xl">
+    <div className="max-w-4xl mx-auto p-6 bg-surface border rounded-md shadow-xl">
       {/* PROFILE INFO */}
       <PageHeader title="General Settings" description="Profile Information" />
       <br />

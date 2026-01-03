@@ -283,7 +283,7 @@ export const ComboboxWithProps: React.FC<ISelectProps> = ({
   const labelEl = label && (
     <label htmlFor={id || name} className={cn("inline-flex items-center text-sm", labelClassName)}>
       {label}
-      {asterisk && <span className="text-red-500 ml-1">*</span>}
+      {asterisk && <span className="text-expense ml-1">*</span>}
     </label>
   );
 
@@ -314,7 +314,7 @@ export const ComboboxWithProps: React.FC<ISelectProps> = ({
             aria-invalid={!!showError}
             aria-describedby={showError ? `${fieldId}-error` : undefined}
             className={cn(
-              "flex w-full cursor-pointer items-center justify-between h-9 rounded-md border border-input bg-white px-3 py-1 text-sm shadow-sm",
+              "flex w-full cursor-pointer items-center justify-between h-9 rounded-md border border-input bg-surface px-3 py-1 text-sm shadow-sm",
               "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring dark:bg-zinc-900 dark:border-zinc-700",
               isDisabled && "opacity-60 cursor-not-allowed",
               showError && "border-red-500 focus-visible:ring-red-500"
@@ -332,7 +332,7 @@ export const ComboboxWithProps: React.FC<ISelectProps> = ({
         <PopoverContent
           className={cn("w-[var(--radix-popover-trigger-width)] p-0", contentClassName)}
         >
-          <Command className="bg-white text-black dark:bg-zinc-900 dark:text-white dark:border-zinc-700">
+          <Command className="bg-surface text-foreground border border-border">
             {showSearch && (
               <CommandInput
                 placeholder="Search..."

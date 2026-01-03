@@ -48,14 +48,14 @@ export default function Signup() {
         {({ values, handleSubmit }) => (
           <form
             onSubmit={handleSubmit}
-            className="w-full max-w-md rounded-lg bg-white p-6 shadow"
+            className="w-full max-w-md rounded-lg bg-surface p-6 shadow"
           >
             <h1 className="mb-4 text-center text-2xl font-semibold">
               Create Account
             </h1>
 
             {isError && (
-              <p className="mb-3 rounded bg-red-100 p-2 text-sm text-red-600">
+              <p className="mb-3 rounded bg-expense-100 p-2 text-sm text-expense">
                 {(error as Error)?.message || "Signup failed"}
               </p>
             )}

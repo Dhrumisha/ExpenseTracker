@@ -12,6 +12,9 @@ import { fetchDashboardData } from "@/services/dashboard/dashboard.servce";
 import { PageHeader } from "@/components/PageHeader/PageHeader";
 import TransactionChart from "@/components/Charts/TransactionChart";
 import LatestTransactionsTable from "@/components/Table/LatestTransactionsTable";
+import { TransactionItem } from "@/components/Charts/TransactionChart";
+import { Account } from "@/types/account/account.types";
+import { GetAllAccount } from "@/services/account/account.service";
 
 export default function DashboardPage() {
   const { data: DashboardData, isLoading } = useQuery({
@@ -19,12 +22,19 @@ export default function DashboardPage() {
     queryFn: fetchDashboardData,
   });
 
+  const { data: accountsData } = useQuery({
+    queryKey: ["accounts"],
+    queryFn: GetAllAccount,
+  });
+
+  const accounts = accountsData?.data || [];
+
   if (isLoading) return <p className="p-10">Loading dashboard...</p>;
 
   const stats: StatisticCardItem[] = [
     {
       title: "Total Balance",
-      amount: DashboardData.availableBalance,
+      amount: DashboardData?.availableBalance || 0,
       description: "Available across all accounts",
       icon: Wallet,
       iconBgColor: "bg-blue-100 dark:bg-blue-900/40",
@@ -32,34 +42,36 @@ export default function DashboardPage() {
     },
     {
       title: "Income",
-      amount: DashboardData.totalIncome,
+      amount: DashboardData?.totalIncome || 0,
       description: "This year",
       icon: TrendingUp,
-      iconBgColor: "bg-green-100 dark:bg-green-900/40",
-      iconColor: "text-green-600",
+      iconBgColor: "bg-income-100 dark:bg-income-weak",
+      iconColor: "text-income",
       trend: "up",
     },
     {
       title: "Expense",
-      amount: DashboardData.totalExpense,
+      amount: DashboardData?.totalExpense || 0,
       description: "This year",
       icon: TrendingDown,
-      iconBgColor: "bg-red-100 dark:bg-red-900/40",
-      iconColor: "text-red-600",
+      iconBgColor: "bg-expense-100 dark:bg-expense-weak",
+      iconColor: "text-expense",
       trend: "down",
     },
   ];
 
   const summaryData: SummaryItem[] = [
-    { name: "Income", value: DashboardData.totalIncome, type: "income" },
-    { name: "Expense", value: DashboardData.totalExpense, type: "expense" },
+    { name: "Income", value: DashboardData?.totalIncome || 0, type: "income" },
+    { name: "Expense", value: DashboardData?.totalExpense || 0, type: "expense" },
   ];
 
-  const transactionData = DashboardData.chartData.map((item: any) => ({
-    month: item.label.substring(0, 3),
-    income: item.income,
-    expense: item.expense,
-  }));
+  const transactionData = DashboardData?.chartData?.map(
+    (item: TransactionItem) => ({
+      label: item.label.substring(0, 3),
+      income: item.income,
+      expense: item.expense,
+    })
+  ) || [];
 
   return (
     <>
@@ -72,7 +84,7 @@ export default function DashboardPage() {
         <StatisticCard items={stats} />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 h-[350px]">
             <TransactionChart data={transactionData} />
           </div>
           <SummaryDonutChart data={summaryData} />
@@ -81,17 +93,16 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-10">
           <div className="lg:col-span-2">
             <LatestTransactionsTable
-              data={DashboardData.lastTransactions}
+              data={DashboardData?.lastTransactions || []}
               title="Latest Transactions"
               buttonName="View All"
               buttonLink={ROUTES.admin.transactions}
             />
           </div>
 
-          <AccountsList data={DashboardData.lastAccounts} />
+          <AccountsList data={accounts} />
         </div>
       </div>
     </>
   );
 }
-

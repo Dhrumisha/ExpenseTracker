@@ -85,11 +85,11 @@ export const CommonAvatar: React.FC<AvatarWithProps> = ({
 
   // Status colors
   const statusColors = {
-    online: "bg-green-500",
+    online: "bg-income",
     offline: "bg-gray-400",
     away: "bg-yellow-500",
-    busy: "bg-red-500",
-  };
+    busy: "bg-expense",
+  }; 
 
   // Generate initials from fallback string
   const getInitials = (fallback: string | React.ReactNode): string => {

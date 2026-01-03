@@ -2,7 +2,7 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import type { StatisticCardItem, StatisticCardProps } from "@/data/cardData";
+import type { StatisticCardProps } from "@/types/cards.types";
 
 export const StatisticCard: React.FC<StatisticCardProps> = ({
   items,
@@ -12,7 +12,7 @@ export const StatisticCard: React.FC<StatisticCardProps> = ({
       {items.map((item) => (
         <div
           key={item.title}
-          className="rounded-xl border bg-white dark:bg-neutral-900 border-gray-200 dark:border-neutral-800 p-6 shadow-sm"
+          className="rounded-xl border bg-surface p-6 shadow-sm"
         >
           <div className="flex items-center justify-between">
             {/* Left Content */}
@@ -36,8 +36,8 @@ export const StatisticCard: React.FC<StatisticCardProps> = ({
                   className={cn(
                     "inline-block text-xs px-2 py-0.5 rounded-md mt-2",
                     item.trend === "up"
-                      ? "text-green-600 bg-green-100 dark:bg-green-900/30"
-                      : "text-red-600 bg-red-100 dark:bg-red-900/30"
+                      ? "text-income bg-income-100 dark:bg-income-weak"
+                      : "text-expense bg-expense-100 dark:bg-expense-weak"
                   )}
                 >
                   {item.label}
