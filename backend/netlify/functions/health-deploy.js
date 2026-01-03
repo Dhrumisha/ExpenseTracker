@@ -18,3 +18,8 @@ exports.handler = async (event, context) => {
     body: JSON.stringify(payload),
   };
 };
+
+[build]
+  command = "echo 'no build'"
+  publish = "."
+  functions = "netlify/functions"
