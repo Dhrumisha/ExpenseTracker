@@ -1,4 +1,4 @@
-import { ButtonWithProps } from "@/components";
+import { ButtonWithProps } from "@/components/Button/Button";
 import Input from "@/components/Input/CommonInput";
 
 interface Props {

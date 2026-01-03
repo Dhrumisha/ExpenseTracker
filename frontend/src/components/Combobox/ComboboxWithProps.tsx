@@ -5,7 +5,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useField } from "formik";
 import { Check, ChevronsUpDown, CircleQuestionMark, Loader2 } from "lucide-react";
 
-import type { ISelectProps } from "@/components/Select/types";
+import type { ISelectProps } from "@/components/Combobox/types";
 import {
   Command,
   CommandInput,
