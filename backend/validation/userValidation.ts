@@ -6,6 +6,11 @@ export const signUpSchema = Joi.object({
      'string.min': 'Firstname must be at least 3 characters long',
      'string.max': 'Firstname cannot exceed 30 characters'
     }),
+  lastname: Joi.string().required().min(3).max(30).messages({
+     'string.empty': 'Lastname is required',
+     'string.min': 'Lastname must be at least 3 characters long',
+     'string.max': 'Lastname cannot exceed 30 characters'
+    }),
   email: Joi.string().required().email().messages({
     'string.empty': 'Email is required',
     'string.email': 'Please enter a valid email address'
@@ -74,13 +79,35 @@ export const updateUserSchema = Joi.object({
   user: Joi.object({
     userId: Joi.number().required()
   }).required(),
-  username: Joi.string().min(3).max(30).messages({
-    'string.min': 'Username must be at least 3 characters long',
-    'string.max': 'Username cannot exceed 30 characters'
-  }),
   email: Joi.string().email().messages({
     'string.email': 'Please enter a valid email address'
-  })
+  }),
+   firstname: Joi.string().required().min(3).max(30).messages({
+     'string.empty': 'Firstname is required',
+     'string.min': 'Firstname must be at least 3 characters long',
+     'string.max': 'Firstname cannot exceed 30 characters'
+    }),
+  lastname: Joi.string().required().min(3).max(30).messages({
+     'string.empty': 'Lastname is required',
+     'string.min': 'Lastname must be at least 3 characters long',
+     'string.max': 'Lastname cannot exceed 30 characters'
+    }),
+  contact: Joi.string().optional().messages({
+    'string.pattern.base': 'Contact must be a valid 10-digit number'
+  }),
+  country: Joi.string().max(50).messages({
+    'string.max': 'Country cannot exceed 50 characters'
+  }),
+  currency: Joi.string().length(3).messages({
+    'string.length': 'Currency must be a 3-letter code'
+  }),
+  theme: Joi.string().valid('light', 'dark').messages({
+    'any.only': 'Theme must be either light or dark'
+  }),
+  language: Joi.string().max(30).messages({
+    'string.max': 'Language cannot exceed 30 characters'
+  }),
+  
 }).min(1).messages({
   'object.min': 'At least one field must be provided for update'
 });

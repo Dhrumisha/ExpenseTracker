@@ -34,6 +34,13 @@ export const generateToken = async (id:String) => {
     );
 }
 
+export const generateRefreshToken = async (id:String) => {
+   return jwt.sign({ userId: id }, 
+        process.env.JWT_SECRET, 
+        { expiresIn: '7d' }
+    );
+}
+
 export const passwordResetToken = async () => {
     const resetToken = crypto.randomBytes(32).toString("hex");
     return resetToken;

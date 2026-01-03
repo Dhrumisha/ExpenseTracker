@@ -2,25 +2,28 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 export const authMiddleware = (req: Request, res: Response,next:NextFunction) => {
-    const authHeader = req.headers.authorization;
+    const token = req.cookies['accessToken'] || req.headers['authorization'];
+    // console.log("authHeader",token)
 
-    if (!authHeader) {
-        res.status(401).json({
-            status: "Failed",
-            message: "Authentication required. Please provide a valid token."
-        });
-        return;
-    }
+// because i store token in cookies
 
-    if (!authHeader.startsWith("Bearer")) {
-        res.status(401).json({
-            status: "Failed",
-            message: "Invalid token format. Token must be Bearer token."
-        });
-        return;
-    }
+    // if (!authHeader) {
+    //     res.status(401).json({
+    //         status: "Failed",
+    //         message: "Authentication required. Please provide a valid token."
+    //     });
+    //     return;
+    // }
 
-   const token = authHeader.split(" ")[1];
+    // if (!authHeader.startsWith("Bearer")) {
+    //     res.status(401).json({
+    //         status: "Failed",
+    //         message: "Invalid token format. Token must be Bearer token."
+    //     });
+    //     return;
+    // }
+
+//    const token = authHeader.split(" ")[1];
 
    if(!token) {
     res.status(401).json({

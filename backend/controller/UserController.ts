@@ -12,11 +12,11 @@ export const getAllUsers = async (req: Request, res: Response) => {
 
         res.status(200).json({
             status: "Success",
-            Result: users.rows.length,  
+            Result: users.rows.length,
             users: users.rows
         });
         return;
-    } 
+    }
     catch (error) {
         if (error instanceof Error) {
             res.status(500).json({
@@ -24,7 +24,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
                 message: error.message
             });
             return;
-        } 
+        }
     }
 }
 
@@ -65,7 +65,7 @@ export const getUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
     try {
         const { userId } = req.body.user;
-        const { firstname, lastname, email, password, currency, contact } = req.body;
+        const { firstname, lastname, email, country, currency, contact } = req.body;
         const userExist = await pool.query({
             text: "SELECT * FROM users WHERE id = $1", values: [userId],
         });
@@ -79,8 +79,9 @@ export const updateUser = async (req: Request, res: Response) => {
             })
         }
         const updatedUser = await pool.query({
-            text: "UPDATE users SET firstname = $1, lastname = $2, email = $3, currency = $4, contact = $5 WHERE id = $6 RETURNING *", values: [firstname, lastname, email, currency, contact, userId],
+            text: "UPDATE users SET firstname = $1, lastname = $2, email = $3, currency = $4, contact = $5, country=$6 WHERE id = $7 RETURNING *", values: [firstname, lastname, email, currency, contact, country, userId],
         });
+
 
         res.status(200).json({
             status: "Success",
@@ -104,7 +105,7 @@ export const deleteUser = async (req: Request, res: Response) => {
         const { userId } = req.body.user;
         const userExist = await pool.query({
             text: "SELECT * FROM users WHERE id = $1", values: [userId],
-        }); 
+        });
         const user = userExist.rows[0];
 
         if (!user) {
@@ -122,7 +123,7 @@ export const deleteUser = async (req: Request, res: Response) => {
             status: "Success",
             message: "User deleted successfully"
         })
-    } 
+    }
     catch (error) {
         if (error instanceof Error) {
             res.status(500).json({
@@ -130,7 +131,7 @@ export const deleteUser = async (req: Request, res: Response) => {
                 message: error.message
             });
             return;
-        } 
+        }
     }
 }
 
@@ -144,14 +145,14 @@ export const deleteAllUsers = async (req: Request, res: Response) => {
             status: "Success",
             message: "All users deleted successfully"
         })
-    } 
+    }
     catch (error) {
         if (error instanceof Error) {
             res.status(500).json({
                 status: "Failed",
-                message: error.message 
-            }) 
-        } 
+                message: error.message
+            })
+        }
     }
 }
 
@@ -191,7 +192,7 @@ export const changePassword = async (req: Request, res: Response) => {
             text: "UPDATE users SET password = $1 WHERE id = $2 RETURNING *",
             values: [hashedPassword, userId],
         });
-        
+
         updatedUser.rows[0].password = undefined;
 
         res.status(200).json({
@@ -213,7 +214,7 @@ export const changePassword = async (req: Request, res: Response) => {
 export const forgetPassword = async (req: Request, res: Response) => {
     try {
         const { email } = req.body;
-        
+
         const userExist = await pool.query({
             text: "SELECT * FROM users WHERE email = $1",
             values: [email],
@@ -235,15 +236,13 @@ export const forgetPassword = async (req: Request, res: Response) => {
             .update(resetToken)
             .digest("hex");
         const resetTokenExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
-        
-       await pool.query({
+
+        await pool.query({
             text: "UPDATE users SET password_reset_token = $1, password_reset_expires = $2 WHERE email = $3",
             values: [hashedToken, resetTokenExpires, email],
         });
 
-        const resetUrl = `${req.protocol}://${req.get(
-            "host"
-        )}/api/v1/user/reset-password/${resetToken}`;
+        const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
         console.log(resetUrl);
 
         const message = `Forgot your password? Submit a PUT request with your new password and passwordConfirm to: ${resetUrl}.\nIf you didn't forget your password, please ignore this email!`;
@@ -258,7 +257,7 @@ export const forgetPassword = async (req: Request, res: Response) => {
             status: "Success",
             message: "Token sent to email!"
         });
-    } 
+    }
     catch (error) {
         if (error instanceof Error) {
             await pool.query({
@@ -269,7 +268,7 @@ export const forgetPassword = async (req: Request, res: Response) => {
             res.status(500).json({
                 status: "Failed",
                 message: "There was an error sending the email. Try again later!"
-            }); 
+            });
         }
     }
 }
@@ -293,8 +292,8 @@ export const resetPassword = async (req: Request, res: Response) => {
             .update(token)
             .digest("hex");
 
-            console.log(hashedToken,"scazxfr");
-            
+        console.log(hashedToken, "scazxfr");
+
 
         const userResult = await pool.query({
             text: "SELECT * FROM users WHERE password_reset_token = $1 AND password_reset_expires > NOW()",
@@ -320,7 +319,7 @@ export const resetPassword = async (req: Request, res: Response) => {
         res.status(200).json({
             status: "Success",
             message: "Password reset successfully",
-            
+
         });
     } catch (error) {
         if (error instanceof Error) {
@@ -331,3 +330,35 @@ export const resetPassword = async (req: Request, res: Response) => {
         }
     }
 }
+
+export const getMe = async (req: Request, res: Response) => {
+    try {
+        const { userId } = req.body.user;
+        const userExist = await pool.query({
+            text: "SELECT * FROM users WHERE id = $1", values: [userId],
+        });
+
+        const user = userExist.rows[0];
+
+        if (!user) {
+            res.status(404).json({
+                status: "Failed",
+                message: "Unauthorized user"
+            })
+            return;
+        }
+        res.json({
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
+        });
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({
+                status: "Failed",
+                message: error.message
+            });
+            return;
+        }
+    }
+};

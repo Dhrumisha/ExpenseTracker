@@ -47,7 +47,7 @@ export const getAccount = async (req: Request, res: Response) => {
             res.status(400).json({
                 status: "Failed",
                 message: "Account not found"
-            }); 
+            });
             return;
         }
 
@@ -61,7 +61,7 @@ export const getAccount = async (req: Request, res: Response) => {
         if (error instanceof Error) {
             res.status(400).json({
                 status: "Failed",
-                message:"can not get account with this id"
+                message: "can not get account with this id"
             });
         }
     }
@@ -70,11 +70,11 @@ export const getAccount = async (req: Request, res: Response) => {
 export const createAccount = async (req: Request, res: Response) => {
     try {
         const { userId } = req.body.user;
-        const { name, amount, acc_number } = req.body;
+        const { acc_name, amount, acc_number } = req.body;
 
         const accountExistQuery = await pool.query({
             text: `SELECT * FROM accounts WHERE acc_name = $1 AND user_id = $2`,
-            values: [name, userId]
+            values: [acc_name, userId]
         });
 
         const accountExist = accountExistQuery.rows[0];
@@ -89,23 +89,23 @@ export const createAccount = async (req: Request, res: Response) => {
 
         const createAccountResult = await pool.query({
             text: `INSERT INTO accounts (user_id,acc_name,acc_balance,acc_number) VALUES ($1,$2,$3,$4) RETURNING *`,
-            values: [userId, name, amount, acc_number]
+            values: [userId, acc_name, amount, acc_number]
         });
 
         const newAccount = createAccountResult.rows[0];
 
-        const userAccount = Array.isArray(name) ? name : [name];
+        const userAccount = Array.isArray(acc_name) ? acc_name : [acc_name];
 
         const updateUserAccount = await pool.query({
             text: `UPDATE users SET account = array_cat(account,$1) WHERE id = $2 RETURNING *`,
             values: [userAccount, userId]
         });
 
-            const description = newAccount.acc_name + "(Initial deposit)";
+        const description = newAccount.acc_name + "(Initial deposit)";
 
         const transactionInitialQuery = {
             text: `INSERT INTO transactions (user_id,description,status,source,amount,type) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-            values: [userId, description, "complted", newAccount.acc_name, amount, "income"]
+            values: [userId, description, "completed", newAccount.acc_name, amount, "income"]
         };
         await pool.query(transactionInitialQuery);
 
@@ -134,12 +134,12 @@ export const addMoneyToAccount = async (req: Request, res: Response) => {
         const { amount } = req.body;
 
         const newAmount = parseInt(amount);
-        
+
         const accountQuery = await pool.query({
             text: `SELECT * FROM accounts WHERE id = $1 AND user_id = $2`,
-            values: [id, userId] 
+            values: [id, userId]
         })
-        
+
         const account = accountQuery.rows[0];
 
         if (!account) {
@@ -161,7 +161,7 @@ export const addMoneyToAccount = async (req: Request, res: Response) => {
 
         const transactionQuery = {
             text: `INSERT INTO transactions (user_id,description,status,source,amount,type) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-            values: [userId, description, "complted", accountInformation.acc_name, amount, "income"]
+            values: [userId, description, "completed", accountInformation.acc_name, amount, "income"]
         }
         await pool.query(transactionQuery);
 
@@ -244,7 +244,7 @@ export const deleteAllAccount = async (req: Request, res: Response) => {
         // Delete all related transactions 
         await pool.query({
             text: `DELETE FROM transactions WHERE user_id = $1`,
-            values: [userId] 
+            values: [userId]
         })
 
         // Delete all accounts
@@ -263,8 +263,8 @@ export const deleteAllAccount = async (req: Request, res: Response) => {
             status: "Success",
             message: "All accounts and related data deleted successfully"
         });
-        
-    } 
+
+    }
     catch (error) {
         if (error instanceof Error) {
             res.status(400).json({
@@ -272,6 +272,6 @@ export const deleteAllAccount = async (req: Request, res: Response) => {
                 message: "Cannot delete account: " + error.message
             });
             return;
-        } 
+        }
     }
 }
