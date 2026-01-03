@@ -14,7 +14,7 @@ import {
 import TransactionViewModal from "./transaction-view.modal";
 import PayTransactionModal from "./PayTransactionModal";
 import TransactionsFilters from "./TransactionsFilters";
-import { ButtonWithProps } from "@/components";
+import { ButtonWithProps } from "@/components/Button/Button";
 
 export default function TransactionsPage() {
   const [search, setSearch] = useState("");
@@ -34,7 +34,7 @@ export default function TransactionsPage() {
   });
 
   return (
-    <div className="p-10 space-y-6">
+    <div className="p-1 space-y-6 xl:p-10">
       {/* HEADER */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <h1 className="text-2xl font-semibold">Transactions Activity</h1>

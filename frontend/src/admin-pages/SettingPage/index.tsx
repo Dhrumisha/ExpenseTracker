@@ -61,13 +61,13 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-surface border rounded-md shadow-xl">
+    <div className="max-w-4xl mx-auto xl:p-6 p-2 bg-surface border rounded-md shadow-xl">
       {/* PROFILE INFO */}
       <PageHeader title="General Settings" description="Profile Information" />
       <br />
       <hr />
 
-      <div className="p-5">
+      <div className="p-1 xl:p-5">
         <Formik
           enableReinitialize
           initialValues={initialValues}

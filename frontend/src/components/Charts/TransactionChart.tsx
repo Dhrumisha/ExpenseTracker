@@ -25,7 +25,7 @@ export default function TransactionChart({ data }: { data: TransactionItem[]  })
 
   return (
     <Card className="h-full">
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-row items-center justify-between flex-wrap">
         <CardTitle>Transaction Activity</CardTitle>
 
         <div className="flex gap-2">

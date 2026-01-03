@@ -2,11 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils"; // optional helper
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
+
+import { cn } from "@/lib/utils";
 import { ProfileMenu } from "./ProfileMenu";
-import { ROUTES } from "@/admin-pages/routes";
 import ThemeToggle from "./ThemeToggle";
+import { ROUTES } from "@/admin-pages/routes";
 
 const navLinks = [
   { label: "Dashboard", href: ROUTES.admin.overview },
@@ -17,24 +20,17 @@ const navLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
 
   return (
-    <header
-      className="sticky top-0 z-50 border-b bg-[var(--card)]/80 dark:bg-[var(--background)]/80 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b bg-card/80 backdrop-blur">
       <nav className="mx-auto flex h-16 items-center justify-between px-6">
         {/* LEFT – LOGO */}
-        <motion.div
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3 }}
-          className="flex items-center gap-2"
-        >
-          <Link href="/admin/dashboard" className="text-xl font-semibold">
-            <span className="text-primary">Fin</span>Board
-          </Link>
-        </motion.div>
+        <Link href={ROUTES.admin.overview} className="text-xl font-semibold">
+          <span className="text-primary">Fin</span>Board
+        </Link>
 
-        {/* CENTER – NAV LINKS */}
+        {/* DESKTOP NAV */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => {
             const isActive = pathname.startsWith(link.href);
@@ -52,7 +48,6 @@ export default function Navbar() {
               >
                 {link.label}
 
-                {/* Active underline */}
                 {isActive && (
                   <motion.span
                     layoutId="nav-underline"
@@ -64,15 +59,60 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* RIGHT SIDE */}
-        <div className="flex items-center gap-4">
+        {/* RIGHT – DESKTOP */}
+        <div className="hidden md:flex items-center gap-4">
           <ThemeToggle />
-
-          <Link href={ROUTES.admin.overview} className="flex items-center gap-3">
-            <ProfileMenu />
-          </Link>
+          <ProfileMenu />
         </div>
+
+        {/* MOBILE TOGGLE */}
+        <button
+          className="md:hidden p-2 rounded-md border"
+          onClick={() => setOpen((p) => !p)}
+        >
+          {open ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </nav>
+
+      {/* MOBILE MENU */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="md:hidden border-t bg-card"
+          >
+            <div className="flex flex-col gap-4 px-6 py-4">
+              {navLinks.map((link) => {
+                const isActive = pathname.startsWith(link.href);
+
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      "text-sm font-medium",
+                      isActive
+                        ? "text-primary"
+                        : "text-muted-foreground"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+
+              <div className="flex items-center justify-between pt-4 border-t">
+                <ThemeToggle />
+                <ProfileMenu />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

@@ -36,7 +36,7 @@ export function DataTable<TData>({
 
   return (
     <Card className={cn("w-full", className)}>
-      <CardHeader className="flex items-center justify-between">
+      <CardHeader className="flex items-center justify-between flex-wrap">
         <div>
           <h1 className="text-xl font-bold text-foreground"> {title}</h1>
         </div>

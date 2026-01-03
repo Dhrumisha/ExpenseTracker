@@ -35,8 +35,8 @@ export const PageHeader = ({
 
   return (
     <div
-      className={`px-8 flex flex-col gap-4 ${className ?? ""} ${
-        usedInsideSection ? "py-0" : "lg:pt-6 pt-4"
+      className={`xl:px-8 px-2 flex flex-col gap-4 ${className ?? ""} ${
+        usedInsideSection ? "py-0" : "lg:pt-6 pt-2"
       }`}
     >
       {/* Heading and Description */}
@@ -66,7 +66,7 @@ export const PageHeader = ({
         </div>
 
         <div
-          className="flex max-lg:flex-wrap max-lg:w-full justify-end items-center gap-2 lg:leading-10!"
+          className="flex max-lg:flex-wrap max-lg:w-full xl:justify-end items-center justify-start gap-2 lg:leading-10!"
           role="toolbar"
           aria-labelledby={customModuleName}
         >

@@ -5,7 +5,7 @@ import SummaryDonutChart, {
   SummaryItem,
 } from "@/components/Charts/SummaryDonutChart";
 import { useQuery } from "@tanstack/react-query";
-import { StatisticCardItem } from "@/data/cardData";
+import { StatisticCardItem } from "@/types/cards.types";
 import { Wallet, TrendingUp, TrendingDown } from "lucide-react";
 import { ROUTES } from "../routes";
 import { fetchDashboardData } from "@/services/dashboard/dashboard.servce";
@@ -80,7 +80,7 @@ export default function DashboardPage() {
         description="All the details about your Accounts, Transactions, etc..."
       />
 
-      <div className="p-10">
+      <div className="p-4 xl:p-10">
         <StatisticCard items={stats} />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">

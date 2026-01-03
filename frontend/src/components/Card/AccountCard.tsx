@@ -98,9 +98,9 @@ export default function AccountCard({ account, accounts }: Props) {
                   >
                     Add Money
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="text-expense cursor-pointer">
+                  {/* <DropdownMenuItem className="text-expense cursor-pointer">
                     Delete
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

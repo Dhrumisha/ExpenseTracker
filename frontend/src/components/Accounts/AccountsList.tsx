@@ -10,7 +10,7 @@ import { ROUTES } from "@/admin-pages/routes";
 export default function AccountsList({ data }: { data: Account[] }) {
   return (
     <Card>
-      <CardHeader className="pb-3 flex items-start justify-between w-full">
+      <CardHeader className="pb-3 flex items-start justify-between w-full flex-wrap">
         <div>
           <CardTitle className="text-lg">Accounts</CardTitle>
           <p className="text-sm text-muted-foreground">Account Information</p>

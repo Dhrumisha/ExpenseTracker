@@ -40,7 +40,7 @@ export default function AccountsPage() {
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 xl:px-8">
           {accounts.map((account: Account) => (
             <AccountCard key={account.id} account={account} accounts={accounts} />
           ))}
