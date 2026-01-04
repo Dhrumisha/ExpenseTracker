@@ -1,0 +1,27 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "server.ts",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "server.ts"
+        }
+    ],
+    "env": {
+        "PGHOSTNAME": "127.0.0.1",
+        "PGUSERNAME": "postgres",
+        "PGPASSWORD": "12345678",
+        "PGDATABASE": "expensetracker",
+        "PGPORT": "5432",
+        "JWT_SECRET": "secretcdkgrndlfmeosrjwos",
+        "EMAIL_USERNAME": "fed5d9f38da7c6",
+        "EMAIL_PASSWORD": "fec08f154a4466",
+        "EMAIL_HOST": "sandbox.smtp.mailtrap.io",
+        "EMAIL_PORT": "2525"
+    }
+}
