@@ -41,7 +41,7 @@ export const buildRouteWithQuery = (
   params: Record<string, string | number | null | undefined>
 ): string => {
   const queryString = Object.entries(params)
-    .filter(([_, value]) => value !== null && value !== undefined)
+    .filter(([ , value]) => value !== null && value !== undefined)
     .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
     .join("&");
   return `${basePath}${queryString ? `?${queryString}` : ""}`;

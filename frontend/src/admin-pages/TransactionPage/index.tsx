@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Plus, Download } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 
 import SimpleTable from "@/components/Table/Table";
 import { transactionColumns } from "./transactions.columns";
@@ -13,7 +13,6 @@ import {
 } from "@/types/transaction/transaction.types";
 import TransactionViewModal from "./transaction-view.modal";
 import PayTransactionModal from "./PayTransactionModal";
-import TransactionsFilters from "./TransactionsFilters";
 import { ButtonWithProps } from "@/components/Button/Button";
 
 export default function TransactionsPage() {

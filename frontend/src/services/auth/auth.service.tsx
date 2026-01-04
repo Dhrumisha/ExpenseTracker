@@ -121,5 +121,3 @@ export const ChangePassword = async (
     throw toast.error(error?.response?.data?.message || "Error during password change");
   }
 };
-
-export default { SignUpForm, SignInForm };

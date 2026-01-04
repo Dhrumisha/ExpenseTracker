@@ -5,18 +5,16 @@ import { useMutation } from "@tanstack/react-query";
 import { Formik } from "formik";
 
 import { ROUTES } from "@/admin-pages/routes";
-import { login } from "@/redux/slices/userSlice";
 import { useAppDispatch } from "@/redux";
 
 import Input from "@/components/Input/CommonInput";
 import { SignUpSchema } from "@/utils/validations/auth/authvalidationSchema";
-import { SignUpForm, SignUpResponse } from "@/services/auth/auth.service";
+import { SignUpForm } from "@/services/auth/auth.service";
 import { SignUpFormType } from "@/types/auth/auth.types";
 import { toast } from "react-toastify";
 
 export default function Signup() {
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
   const {
     mutate: signUpMutation,

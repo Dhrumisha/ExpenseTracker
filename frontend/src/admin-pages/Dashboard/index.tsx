@@ -13,7 +13,6 @@ import { PageHeader } from "@/components/PageHeader/PageHeader";
 import TransactionChart from "@/components/Charts/TransactionChart";
 import LatestTransactionsTable from "@/components/Table/LatestTransactionsTable";
 import { TransactionItem } from "@/components/Charts/TransactionChart";
-import { Account } from "@/types/account/account.types";
 import { GetAllAccount } from "@/services/account/account.service";
 
 export default function DashboardPage() {

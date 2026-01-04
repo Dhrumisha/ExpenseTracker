@@ -45,7 +45,7 @@ export function PieChart<TData extends Record<string, any>>({
   // Compute total for center label
   const total = data.reduce((sum, d) => sum + Number(d[dataKey] ?? 0), 0);
 
-  const tooltipFormatter = (value: any, _name: string) => {
+  const tooltipFormatter = (value: any) => {
     const num = typeof value === "number" ? value : Number(value);
     return valueFormatter ? valueFormatter(num) : String(value);
   };

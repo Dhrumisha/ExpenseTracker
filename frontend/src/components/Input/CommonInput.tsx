@@ -50,7 +50,6 @@ const Input = ({
   disabled, // Manually disable the input field
   label, // Label text displayed above the input
   labelClassName = "", // Additional CSS classes for the label
-  error, // Manual error state (for non-Formik usage)
   errorMessage, // Manual error message (for non-Formik usage)
   asterisk = false, // Show asterisk (*) to indicate required field
   formik = false, // Enable Formik integration. When true, uses Formik's Field component
@@ -158,7 +157,6 @@ const Input = ({
         <Field name={name}>
           {({ field: formikField, meta: formikMeta }: any) => {
             // Check if field has been touched and has an error
-            const hasFormikError = formikMeta.touched && formikMeta.error;
             const fieldInputProps = {
               ...inputProps,
               ...formikField, // Spread Formik field props (value, onChange, onBlur, etc.)
