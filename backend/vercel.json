@@ -22,6 +22,7 @@
         "EMAIL_USERNAME": "fed5d9f38da7c6",
         "EMAIL_PASSWORD": "fec08f154a4466",
         "EMAIL_HOST": "sandbox.smtp.mailtrap.io",
-        "EMAIL_PORT": "2525"
+        "EMAIL_PORT": "2525",
+        "FRONTEND_URL": "http://localhost:3000"
     }
 }
