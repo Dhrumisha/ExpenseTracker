@@ -18,7 +18,7 @@ export default function ChangePasswordForm() {
     confirmPassword: "",
   };
 
-  const { mutate, isPending } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (payload: ChangePasswordValues) =>
       ChangePassword(payload),
 
@@ -45,7 +45,7 @@ export default function ChangePasswordForm() {
       <Formik
         initialValues={initialValues}
         validationSchema={ChangePasswordSchema}
-        onSubmit={(values, { resetForm }) => {
+        onSubmit={(values, { }) => {
           mutate({
             currentPassword: values.currentPassword,
             newPassword: values.newPassword,

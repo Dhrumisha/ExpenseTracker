@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { Formik } from "formik";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/PageHeader/PageHeader";
 import ChangePasswordForm from "../auth/ChangePassword";
 import { ProfileSchema } from "@/utils/validations/settings/settings.schema";
-import { useAppSelector } from "@/redux";
 import { GetUser, UpdateUser } from "@/services/user/user.service";
 import { UpdateUserPayload } from "@/types/user/user.types";
 import { toast } from "react-toastify";
@@ -87,7 +86,7 @@ export default function SettingsPage() {
               if (selectedCountry?.currencyCode) {
                 setFieldValue("currency", selectedCountry.currencyCode);
               }
-            }, [values.country, CountriesData]);
+            }, [values.country, CountriesData,setFieldValue]);
             /* ✅ CURRENCY OPTIONS (derived from country) */
             const currencyOptions = useMemo(() => {
               if (!values.currency) return [];

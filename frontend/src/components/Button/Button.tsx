@@ -6,22 +6,6 @@ import { Loader } from "../Loader/Loader";
 import { Button } from "../ui/button";
 import { cn } from "../../lib/utils";
 
-/**
- * ButtonWithProps Component
- *
- * A reusable button component that wraps ShadCN Button
- * Adds loading state and icon support while preserving all ShadCN styles
- *
- * @example
- * <CommonButton
- *   variant="default"
- *   loading={isSubmitting}
- *   icon={<Save />}
- *   iconPosition="left"
- * >
- *   Save Changes
- * </CommonButton>
- */
 export const ButtonWithProps: React.FC<ButtonWithPropsProps> = ({
   children,
   variant = "default",

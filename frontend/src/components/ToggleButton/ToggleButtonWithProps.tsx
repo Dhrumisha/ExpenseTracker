@@ -25,7 +25,6 @@ export const ToggleButtonWithProps: React.FC<IToggleButtonProps> = ({
 
   const isDisabled = isUsedWithoutPermission || disabled;
   const [toggle, setToggle] = React.useState(defaultValue);
-  const displayText = toggle ? on || "ON" : off || "OFF";
   const handleChange = (value: boolean) => {
     setToggle(value);
     onChange?.(value);
