@@ -37,7 +37,7 @@ export const InputWithProps = ({
   field,
   meta,
   isInline,
-  form, // Exclude Formik form prop to avoid conflict with native HTML form attribute
+  form: _form, // Exclude Formik form prop to avoid conflict with native HTML form attribute
   ...props
 }: IInputHelperProps) => {
   // Formik integration

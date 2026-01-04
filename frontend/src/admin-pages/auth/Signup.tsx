@@ -5,7 +5,6 @@ import { useMutation } from "@tanstack/react-query";
 import { Formik } from "formik";
 
 import { ROUTES } from "@/admin-pages/routes";
-import { useAppDispatch } from "@/redux";
 
 import Input from "@/components/Input/CommonInput";
 import { SignUpSchema } from "@/utils/validations/auth/authvalidationSchema";
