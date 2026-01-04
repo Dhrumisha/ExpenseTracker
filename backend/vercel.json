@@ -23,6 +23,6 @@
         "EMAIL_PASSWORD": "fec08f154a4466",
         "EMAIL_HOST": "sandbox.smtp.mailtrap.io",
         "EMAIL_PORT": "2525",
-        "FRONTEND_URL": "http://localhost:3000"
+        "FRONTEND_URL": "https://expense-tracker-dhrumishas-projects.vercel.app/"
     }
 }
