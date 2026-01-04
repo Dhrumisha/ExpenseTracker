@@ -11,33 +11,13 @@ app.use(cookieParser());
 const port = 8000;
 
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "*",
     credentials: true,
 }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/v1', routes);
-
-app.get('/health', async (req: Request, res: Response) => {
-    try {
-        await pool.query('SELECT 1');
-        res.status(200).json({
-            status: 'ok',
-            uptime: process.uptime(),
-            timestamp: new Date().toISOString(),
-            db: 'ok'
-        });
-    } catch (error: any) {
-        res.status(500).json({
-            status: 'error',
-            uptime: process.uptime(),
-            timestamp: new Date().toISOString(),
-            db: 'error',
-            message: error?.message || 'unknown error'
-        });
-    }
-});
 
 // Lightweight deploy-only check (no DB call) to verify the app is running (useful for load balancers/uptime probes)
 app.get('', (req: Request, res: Response) => {
