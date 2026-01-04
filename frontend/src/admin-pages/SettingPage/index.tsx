@@ -76,6 +76,7 @@ export default function SettingsPage() {
           }}
         >
           {({ handleSubmit, values, setFieldValue,handleReset }) => {
+             // eslint-disable-next-line react-hooks/set-state-in-effect
             useEffect(() => {
               if (!values.country || !CountriesData) return;
 
@@ -86,7 +87,7 @@ export default function SettingsPage() {
               if (selectedCountry?.currencyCode) {
                 setFieldValue("currency", selectedCountry.currencyCode);
               }
-            }, [values.country, CountriesData,setFieldValue]);
+            }, [values.country, CountriesData]);
             /* ✅ CURRENCY OPTIONS (derived from country) */
             const currencyOptions = useMemo(() => {
               if (!values.currency) return [];
