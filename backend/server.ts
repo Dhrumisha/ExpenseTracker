@@ -40,12 +40,8 @@ app.get('/health', async (req: Request, res: Response) => {
 });
 
 // Lightweight deploy-only check (no DB call) to verify the app is running (useful for load balancers/uptime probes)
-app.get('/health/deploy', (req: Request, res: Response) => {
-    res.status(200).json({
-        status: 'deployed',
-        uptime: process.uptime(),
-        timestamp: new Date().toISOString()
-    });
+app.get('', (req: Request, res: Response) => {
+    res.send('Server is running');
 });
 
 app.get("*", (req: Request, res: Response) => {
