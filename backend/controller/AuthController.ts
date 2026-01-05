@@ -115,7 +115,7 @@ export const SignInUser = async (req: Request, res: Response) => {
         // Set tokens in HTTP-only cookies
         res.cookie('accessToken', accessToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            // secure: process.env.NODE_ENV === 'production',
             sameSite: "lax", // ✅ NOT strict
             path: "/",       // ✅ REQUIRED
             maxAge: 24 * 60 * 60 * 1000, // 1 day
@@ -123,7 +123,7 @@ export const SignInUser = async (req: Request, res: Response) => {
 
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            // secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
