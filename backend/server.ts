@@ -10,12 +10,14 @@ const app = express();
 app.use(cookieParser());
 const port = 8000;
 
+
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+
 app.use(cors({
     origin: "*",
     credentials: true,
 }));
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/v1', routes);
 
