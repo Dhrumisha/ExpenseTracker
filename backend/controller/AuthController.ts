@@ -51,7 +51,7 @@ export const SignUpUser = async (req: Request, res: Response) => {
         // Set refresh token in HTTP-only cookie to track sign-up status
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: false, // process.env.NODE_ENV === 'production'`,
             sameSite: 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
@@ -156,7 +156,7 @@ export const LogoutUser = async (req: Request, res: Response) => {
         // 🔥 Clear access token
         res.clearCookie("accessToken", {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: false, // process.env.NODE_ENV === "production",
             sameSite: "lax",
             path: "/", // MUST MATCH LOGIN COOKIE
         });
@@ -164,7 +164,7 @@ export const LogoutUser = async (req: Request, res: Response) => {
         // 🔥 Clear refresh token
         res.clearCookie("refreshToken", {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: false, // process.env.NODE_ENV === "production",
             sameSite: "lax",
             path: "/",
         });
