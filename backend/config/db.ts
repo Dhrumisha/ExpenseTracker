@@ -9,6 +9,9 @@ const pool = new Pool({
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT ? parseInt(process.env.PGPORT, 10) : undefined,
+    ssl: {
+    rejectUnauthorized: false, // REQUIRED for Render external DB
+  },
 });
 
 export default pool;

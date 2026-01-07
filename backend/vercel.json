@@ -13,16 +13,16 @@
         }
     ],
     "env": {
-        "PGHOSTNAME": "127.0.0.1",
-        "PGUSERNAME": "postgres",
-        "PGPASSWORD": "12345678",
-        "PGDATABASE": "expensetracker",
-        "PGPORT": "5432",
-        "JWT_SECRET": "secretcdkgrndlfmeosrjwos",
-        "EMAIL_USERNAME": "fed5d9f38da7c6",
-        "EMAIL_PASSWORD": "fec08f154a4466",
-        "EMAIL_HOST": "sandbox.smtp.mailtrap.io",
-        "EMAIL_PORT": "2525",
-        "FRONTEND_URL": "https://expense-tracker-dhrumishas-projects.vercel.app/"
+       "PGHOSTNAME": "dpg-d5f94vfgi27c73cjleq0-a.virginia-postgres.render.com",
+       "PGUSERNAME": "expense_tracker_3ka3_user",
+       "PGPASSWORD": "WDg88y5Cd24z6OstbPb50s1nJ1TyGvzw",
+       "PGDATABASE": "expense_tracker_3ka3",
+       "PGPORT": "5432",    
+       "JWT_SECRET": "secretcdkgrndlfmeosrjwos",
+       "EMAIL_USERNAME": "fed5d9f38da7c6",
+       "EMAIL_PASSWORD": "fec08f154a4466",
+       "EMAIL_HOST": "sandbox.smtp.mailtrap.io",
+       "EMAIL_PORT": "2525",
+       "FRONTEND_URL": "https://expense-tracker-dhrumishas-projects.vercel.app"
     }
 }
