@@ -15,7 +15,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
-    origin: "https://expense-tracker-dhrumishas-projects.vercel.app",
+    origin: "*",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
