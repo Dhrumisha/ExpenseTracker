@@ -31,7 +31,7 @@ export async function SignUpForm(
   try {
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/auth/sign-up`,
-      payload
+      payload,{withCredentials: true, }
     );
     return res.data;
   } catch (error: any) {
@@ -65,7 +65,7 @@ export const forgotPassword = async (payload: {
   try {
     const { data } = await axios.put(
       `${process.env.NEXT_PUBLIC_BASE_URL}/user/forget-password`,
-      payload
+      payload,{withCredentials: true, }
     );
     return data;
   } catch (error: any) {
@@ -83,7 +83,7 @@ export const resetPassword = async (
   try {
   const { data } = await axios.put(
     `${process.env.NEXT_PUBLIC_BASE_URL}/user/reset-password/${token}`,
-    payload
+    payload,{withCredentials: true, }
   );
   return data;
   } catch (error: any) {
