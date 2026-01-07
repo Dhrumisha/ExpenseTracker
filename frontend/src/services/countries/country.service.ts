@@ -7,7 +7,7 @@ export interface CountryOption {
 }
 
 export const getAllCountries = async (): Promise<CountryOption[]> => {
-  const res = await axios.get("https://restcountries.com/v3.1/all?fields=name,cca2,currencies");
+  const res = await axios.get("https://restcountries.com/v3.1/all?fields=name,cca2,currencies",{withCredentials: true, });
 
   return res.data.map((country: any) => {
     const currencyCode = country.currencies
