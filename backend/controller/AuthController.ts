@@ -51,7 +51,7 @@ export const SignUpUser = async (req: Request, res: Response) => {
         // Set refresh token in HTTP-only cookie to track sign-up status
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: false, // process.env.NODE_ENV === 'production'`,
+            secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
@@ -115,7 +115,7 @@ export const SignInUser = async (req: Request, res: Response) => {
         // Set tokens in HTTP-only cookies
         res.cookie('accessToken', accessToken, {
             httpOnly: true,
-            // secure: process.env.NODE_ENV === 'production',
+            secure: process.env.NODE_ENV === 'production',
             sameSite: "lax", // ✅ NOT strict
             path: "/",       // ✅ REQUIRED
             maxAge: 24 * 60 * 60 * 1000, // 1 day
