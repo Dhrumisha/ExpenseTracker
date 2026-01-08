@@ -3,6 +3,7 @@ import pool from '../config/db';
 import { comparePassword, hashPassword, passwordResetToken } from '../config';
 import sendEmail from '../config/nodemailersmtp';
 import crypto from 'crypto';
+import { AuthRequest } from '../middleware/authMiddleware';
 
 export const getAllUsers = async (req: Request, res: Response) => {
     try {
@@ -331,9 +332,9 @@ export const resetPassword = async (req: Request, res: Response) => {
     }
 }
 
-export const getMe = async (req: Request, res: Response) => {
+export const getMe = async (req: AuthRequest, res: Response) => {
     try {
-        const { userId } = req.body.user;
+         const userId = req.userId;
         const userExist = await pool.query({
             text: "SELECT * FROM users WHERE id = $1", values: [userId],
         });
