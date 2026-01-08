@@ -29,9 +29,9 @@ export const getAllUsers = async (req: Request, res: Response) => {
     }
 }
 
-export const getUser = async (req: Request, res: Response) => {
+export const getUser = async (req: AuthRequest, res: Response) => {
     try {
-        const { userId } = req.body.user;
+        const userId = req.userId;
         const userExist = await pool.query({
             text: "SELECT * FROM users WHERE id = $1", values: [userId],
         });
@@ -63,9 +63,9 @@ export const getUser = async (req: Request, res: Response) => {
 
 }
 
-export const updateUser = async (req: Request, res: Response) => {
+export const updateUser = async (req: AuthRequest, res: Response) => {
     try {
-        const { userId } = req.body.user;
+        const userId = req.userId;
         const { firstname, lastname, email, country, currency, contact } = req.body;
         const userExist = await pool.query({
             text: "SELECT * FROM users WHERE id = $1", values: [userId],
@@ -101,9 +101,9 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteUser = async (req: AuthRequest, res: Response) => {
     try {
-        const { userId } = req.body.user;
+        const userId = req.userId;
         const userExist = await pool.query({
             text: "SELECT * FROM users WHERE id = $1", values: [userId],
         });
@@ -157,9 +157,9 @@ export const deleteAllUsers = async (req: Request, res: Response) => {
     }
 }
 
-export const changePassword = async (req: Request, res: Response) => {
+export const changePassword = async (req: AuthRequest, res: Response) => {
     try {
-        const { userId } = req.body.user;
+        const userId = req.userId;
         let { currentPassword, newPassword, confirmPassword } = req.body;
 
         const userExist = await pool.query({

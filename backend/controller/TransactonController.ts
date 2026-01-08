@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import pool from "../config/db";
 import { getMonthName } from "../config";
+import { AuthRequest } from "../middleware/authMiddleware";
 
-export const getTransaction = async (req: Request, res: Response) => {
+export const getTransaction = async (req: AuthRequest, res: Response) => {
     try {
         const today = new Date();
         const sevenDaysAgo = new Date();
@@ -26,7 +27,7 @@ export const getTransaction = async (req: Request, res: Response) => {
         const startDate = df ? new Date(`${df}T00:00:00Z`) : sevenDaysAgo;
         const endDate = dt ? new Date(`${dt}T23:59:59Z`) : today;
 
-        const { userId } = req.body.user;
+        const userId = req.userId;
 
         const allowedSort = ["createdat", "amount", "type"];
         const sortColumn = allowedSort.includes(sortBy) ? sortBy : "createdat";
@@ -93,9 +94,9 @@ export const getTransaction = async (req: Request, res: Response) => {
     }
 };
 
-export const getDashboardInfo = async (req: Request, res: Response) => {
+export const getDashboardInfo = async (req: AuthRequest, res: Response) => {
     try {
-        const { userId } = req.body.user;
+        const userId = req.userId;
 
         let totalIncome = 0;
         let totalExpense = 0;
@@ -172,11 +173,11 @@ export const getDashboardInfo = async (req: Request, res: Response) => {
     }
 }
 
-export const addTransaction = async (req: Request, res: Response) => {
+export const addTransaction = async (req: AuthRequest, res: Response) => {
     try {
         const { account_id } = req.params;
         const { amount, description, source } = req.body;
-        const { userId } = req.body.user;
+        const userId = req.userId;
 
         console.log(req.body)
 
@@ -253,10 +254,10 @@ export const addTransaction = async (req: Request, res: Response) => {
     }
 }
 
-export const transferMoneyToAccount = async (req: any, res: any) => {
+export const transferMoneyToAccount = async (req: AuthRequest, res: any) => {
     try {
 
-        const { userId } = req.body.user;
+        const userId = req.userId;
         const { from_acc, to_acc, amount } = req.body;
 
         if (!from_acc || !to_acc || !amount) {
