@@ -28,14 +28,14 @@ export const comparePassword = async (password: string, hashedPassword: string) 
 }
 
 export const generateToken = async (id:String) => {
-   return jwt.sign({ userId: id }, 
+   return jwt.sign({ id }, 
         process.env.JWT_SECRET, 
         { expiresIn: '1d' }
     );
 }
 
 export const generateRefreshToken = async (id:String) => {
-   return jwt.sign({ userId: id }, 
+   return jwt.sign({ id }, 
         process.env.JWT_SECRET, 
         { expiresIn: '7d' }
     );

@@ -7,6 +7,7 @@ export interface AuthRequest extends Request {
 
 export const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
     const token = req.cookies['accessToken'] || req.headers['authorization'];
+
     // console.log("authHeader",token)
 
     // because i store token in cookies
@@ -39,7 +40,7 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
 
     try {
         const userToken = jwt.verify(token, process.env.JWT_SECRET!) as {
-            id: number;
+            userId: number;
         };
 
         if (!userToken) {
@@ -50,7 +51,7 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
             return;
         }
 
-        req.userId = userToken.id;
+        req.userId = userToken.userId;
 
         next();
     } catch (error) {
