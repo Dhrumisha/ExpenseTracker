@@ -96,7 +96,7 @@ export const getMe = async (): Promise<MeResponse> => {
     const { data } = await axiosInstance.get<MeResponse>("/user/me");
     return data;
   } catch (error: any) {
-    throw toast.error(error?.response?.data?.message || "Unauthorized");
+    throw console.error(error?.response?.data?.message || "Unauthorized");
   }
 };
 
