@@ -5,6 +5,7 @@ import { AuthRequest } from "../middleware/authMiddleware";
 export const getAllAccount = async (req: AuthRequest, res: Response) => {
     try {
         const userId = req.userId;
+        console.log("aaaaaaaaaaaaaaaaaaaaaaaa",userId);
 
         const accounts = await pool.query({
             text: `SELECT * FROM accounts WHERE user_id = $1`,
