@@ -12,7 +12,7 @@ export const getAllAccount = async (req: AuthRequest, res: Response) => {
             values: [userId]
         });
 
-        if (!accounts.rows[0] && !userId) {
+        if (!accounts.rows[0]) {
             res.status(400).json({
                 status: "Failed",
                 message: "Account not found for this user"
