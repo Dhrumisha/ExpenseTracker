@@ -43,7 +43,6 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
             userId: number;
         };
 
-        console.log("Vcdszcsd",userToken);
         if (!userToken) {
             res.status(401).json({
                 status: "Failed",
@@ -53,7 +52,6 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
         }
 
         req.userId = userToken.userId;
-        console.log("cdsfcwas",req.userId)
 
         next();
     } catch (error) {
