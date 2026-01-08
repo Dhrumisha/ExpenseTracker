@@ -1,9 +1,10 @@
 import { Request, Response } from "express"
 import pool from "../config/db";
+import { AuthRequest } from "../middleware/authMiddleware";
 
-export const getAllAccount = async (req: Request, res: Response) => {
+export const getAllAccount = async (req: AuthRequest, res: Response) => {
     try {
-        const { userId } = req.body.user;
+        const userId = req.userId;
 
         const accounts = await pool.query({
             text: `SELECT * FROM accounts WHERE user_id = $1`,
@@ -67,9 +68,9 @@ export const getAccount = async (req: Request, res: Response) => {
     }
 }
 
-export const createAccount = async (req: Request, res: Response) => {
+export const createAccount = async (req: AuthRequest, res: Response) => {
     try {
-        const { userId } = req.body.user;
+        const userId = req.userId;
         const { acc_name, amount, acc_number } = req.body;
 
         const accountExistQuery = await pool.query({
@@ -127,9 +128,9 @@ export const createAccount = async (req: Request, res: Response) => {
     }
 }
 
-export const addMoneyToAccount = async (req: Request, res: Response) => {
+export const addMoneyToAccount = async (req: AuthRequest, res: Response) => {
     try {
-        const { userId } = req.body.user;
+        const userId = req.userId;
         const { id } = req.params;
         const { amount } = req.body;
 
@@ -182,10 +183,10 @@ export const addMoneyToAccount = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteAccount = async (req: Request, res: Response) => {
+export const deleteAccount = async (req: AuthRequest, res: Response) => {
     try {
         const { id } = req.params;
-        const { userId } = req.body.user;
+        const userId = req.userId;
 
         // Get account information before deletion
         const accountQuery = await pool.query({
@@ -237,9 +238,9 @@ export const deleteAccount = async (req: Request, res: Response) => {
         }
     }
 }
-export const deleteAllAccount = async (req: Request, res: Response) => {
+export const deleteAllAccount = async (req: AuthRequest, res: Response) => {
     try {
-        const { userId } = req.body.user;
+        const userId = req.userId;
 
         // Delete all related transactions 
         await pool.query({
