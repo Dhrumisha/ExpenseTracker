@@ -341,18 +341,18 @@ export const getMe = async (req: AuthRequest, res: Response) => {
 
         const user = userExist.rows[0];
 
-        if (!user) {
-            res.status(404).json({
-                status: "Failed",
-                message: "Unauthorized user"
-            })
-            return;
-        }
+        if (user) {
+        //     res.status(404).json({
+        //         status: "Failed",
+        //         message: "Unauthorized user"
+        //     })
+        //     return;
+        // }
         res.json({
             firstname: user.firstname,
             lastname: user.lastname,
             email: user.email,
-        });
+        });}
     } catch (error) {
         if (error instanceof Error) {
             res.status(500).json({

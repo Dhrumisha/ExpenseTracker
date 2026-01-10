@@ -14,6 +14,6 @@ router.put("/forget-password", validateRequest(forgetPasswordSchema), forgetPass
 router.put("/", authMiddleware, validateRequest(updateUserSchema), updateUser);
 router.delete("/", authMiddleware, deleteUser);
 router.delete("/list", deleteAllUsers);
-router.get("/me", authMiddleware, getMe);
+router.get("/me", getMe);
 
 export default router;
