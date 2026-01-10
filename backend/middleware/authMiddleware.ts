@@ -40,7 +40,7 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
 
     try {
         const userToken = jwt.verify(token, process.env.JWT_SECRET!) as {
-            userId: number;
+            id: number;
         };
 
         if (!userToken) {
@@ -51,7 +51,7 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
             return;
         }
 
-        req.userId = userToken.userId;
+        req.userId = userToken.id;
 
         next();
     } catch (error) {
