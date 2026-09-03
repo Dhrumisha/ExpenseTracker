@@ -310,6 +310,7 @@ export const ComboboxWithProps: React.FC<ISelectProps> = ({
           <div
             id={fieldId}
             role="combobox"
+            aria-controls={`${fieldId}-listbox`}
             aria-expanded={open}
             aria-invalid={!!showError}
             aria-describedby={showError ? `${fieldId}-error` : undefined}
@@ -342,7 +343,7 @@ export const ComboboxWithProps: React.FC<ISelectProps> = ({
               />
             )}
 
-            <CommandList ref={scrollContainerRef} onScroll={handleScroll} className="max-h-[300px]">
+            <CommandList id={`${fieldId}-listbox`} ref={scrollContainerRef} onScroll={handleScroll} className="max-h-[300px]">
               <CommandEmpty>
                 {isInitialLoad || isLoadingMore ? (
                   <div className="flex items-center justify-center py-4">

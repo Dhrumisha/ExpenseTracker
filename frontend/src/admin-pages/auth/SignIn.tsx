@@ -35,6 +35,9 @@ export default function SignIn() {
         })
       );
     },
+    onError: (error: Error) => {
+      toast.error(error.message || "Unable to sign in");
+    },
   });
 
   const initialValues: SignInFormType = {

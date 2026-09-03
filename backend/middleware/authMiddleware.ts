@@ -6,29 +6,14 @@ export interface AuthRequest extends Request {
 }
 
 export const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
-    const token = req.cookies['accessToken'] || req.headers['authorization'];
+    // Access token is normally set as an httpOnly cookie by sign-in; a
+    // "Authorization: Bearer <token>" header is accepted as a fallback.
+    const authHeader = req.headers['authorization'];
+    const bearerToken = authHeader?.startsWith("Bearer ")
+        ? authHeader.slice("Bearer ".length)
+        : undefined;
 
-    // console.log("authHeader",token)
-
-    // because i store token in cookies
-
-    // if (!authHeader) {
-    //     res.status(401).json({
-    //         status: "Failed",
-    //         message: "Authentication required. Please provide a valid token."
-    //     });
-    //     return;
-    // }
-
-    // if (!authHeader.startsWith("Bearer")) {
-    //     res.status(401).json({
-    //         status: "Failed",
-    //         message: "Invalid token format. Token must be Bearer token."
-    //     });
-    //     return;
-    // }
-
-    //    const token = authHeader.split(" ")[1];
+    const token = req.cookies['accessToken'] || bearerToken;
 
     if (!token) {
         res.status(401).json({

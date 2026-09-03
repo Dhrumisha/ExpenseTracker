@@ -5,29 +5,16 @@ import sendEmail from '../config/nodemailersmtp';
 import crypto from 'crypto';
 import { AuthRequest } from '../middleware/authMiddleware';
 
-export const getAllUsers = async (req: Request, res: Response) => {
-    try {
-        const users = await pool.query({
-            text: "SELECT * FROM users",
-        });
+// Fields that must never be sent back to the client.
+const SENSITIVE_USER_FIELDS = ["password", "password_reset_token", "password_reset_expires"] as const;
 
-        res.status(200).json({
-            status: "Success",
-            Result: users.rows.length,
-            users: users.rows
-        });
-        return;
+const sanitizeUser = <T extends Record<string, unknown>>(user: T): Omit<T, typeof SENSITIVE_USER_FIELDS[number]> => {
+    const safeUser = { ...user };
+    for (const field of SENSITIVE_USER_FIELDS) {
+        delete safeUser[field];
     }
-    catch (error) {
-        if (error instanceof Error) {
-            res.status(500).json({
-                status: "Failed",
-                message: error.message
-            });
-            return;
-        }
-    }
-}
+    return safeUser;
+};
 
 export const getUser = async (req: AuthRequest, res: Response) => {
     try {
@@ -47,7 +34,7 @@ export const getUser = async (req: AuthRequest, res: Response) => {
         }
         res.status(200).json({
             status: "Success",
-            user: user
+            user: sanitizeUser(user)
         })
         return;
     }
@@ -87,7 +74,7 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
         res.status(200).json({
             status: "Success",
             message: "User updated successfully",
-            user: updatedUser.rows[0]
+            user: sanitizeUser(updatedUser.rows[0])
         })
     }
     catch (error) {
@@ -132,27 +119,6 @@ export const deleteUser = async (req: AuthRequest, res: Response) => {
                 message: error.message
             });
             return;
-        }
-    }
-}
-
-export const deleteAllUsers = async (req: Request, res: Response) => {
-    try {
-        await pool.query({
-            text: "DELETE FROM users",
-        });
-
-        res.status(200).json({
-            status: "Success",
-            message: "All users deleted successfully"
-        })
-    }
-    catch (error) {
-        if (error instanceof Error) {
-            res.status(500).json({
-                status: "Failed",
-                message: error.message
-            })
         }
     }
 }

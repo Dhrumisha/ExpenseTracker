@@ -76,7 +76,6 @@ export default function SettingsPage() {
           }}
         >
           {({ handleSubmit, values, setFieldValue,handleReset }) => {
-             // eslint-disable-next-line react-hooks/set-state-in-effect
             useEffect(() => {
               if (!values.country || !CountriesData) return;
 

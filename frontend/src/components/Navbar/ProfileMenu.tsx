@@ -24,10 +24,8 @@ export function ProfileMenu() {
   const handleLogout = async () => {
     try {
       await logoutUser();
-  
+
       dispatch(logout());
-      sessionStorage.removeItem("auth_token");
-  
       router.replace("/sign-in");
     } catch (err) {
       console.error("Logout failed", err);
