@@ -169,7 +169,10 @@ export const getDashboardInfo = async (req: AuthRequest, res: Response) => {
         })
 
     } catch (error) {
-
+        res.status(500).send({
+            status: "Failed",
+            message: "Failed to fetch dashboard information"
+        });
     }
 }
 
@@ -197,12 +200,12 @@ export const addTransaction = async (req: AuthRequest, res: Response) => {
             return;
         }
 
+        // Scoped to user_id: without this check, any signed-in user could
+        // pass another user's account_id and spend down their balance.
         const result = await pool.query({
-            text: `SELECT * FROM accounts WHERE id = $1`,
-            values: [account_id]
+            text: `SELECT * FROM accounts WHERE id = $1 AND user_id = $2`,
+            values: [account_id, userId]
         });
-
-
 
         const accountInfo = result.rows[0];
 
@@ -222,19 +225,30 @@ export const addTransaction = async (req: AuthRequest, res: Response) => {
             return;
         }
 
-        await pool.query("BEGIN");
+        // Use a single dedicated client for the transaction — pool.query()
+        // can hand BEGIN/COMMIT/the statements in between to different
+        // connections, which would silently break atomicity.
+        const client = await pool.connect();
+        try {
+            await client.query("BEGIN");
 
-        await pool.query({
-            text: `UPDATE accounts SET acc_balance = acc_balance - $1 WHERE id = $2 RETURNING *`,
-            values: [amount, account_id]
-        });
+            await client.query({
+                text: `UPDATE accounts SET acc_balance = acc_balance - $1 WHERE id = $2 RETURNING *`,
+                values: [amount, account_id]
+            });
 
-        await pool.query({
-            text: `INSERT INTO transactions (user_id,description,type,status,amount,source) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-            values: [userId, description, "expense", "completed", amount, source]
-        });
+            await client.query({
+                text: `INSERT INTO transactions (user_id,description,type,status,amount,source) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+                values: [userId, description, "expense", "completed", amount, source]
+            });
 
-        await pool.query("COMMIT");
+            await client.query("COMMIT");
+        } catch (error) {
+            await client.query("ROLLBACK");
+            throw error;
+        } finally {
+            client.release();
+        }
 
         res.status(201).send({
             status: "Success",
@@ -242,15 +256,10 @@ export const addTransaction = async (req: AuthRequest, res: Response) => {
         })
     }
     catch (error) {
-        if (error instanceof Error) {
-            await pool.query("ROLLBACK");
-
-            res.status(400).send({
-                status: "Failed",
-                message: "Transaction Failed!!" + error.message
-            });
-            return;
-        }
+        res.status(400).send({
+            status: "Failed",
+            message: "Transaction Failed!!" + (error instanceof Error ? error.message : "")
+        });
     }
 }
 
@@ -276,13 +285,15 @@ export const transferMoneyToAccount = async (req: AuthRequest, res: any) => {
             });
             return;
         }
+        // from_acc must belong to the caller — without this check, any
+        // signed-in user could drain funds out of someone else's account.
         const fromAccountResult = await pool.query({
-            text: `SELECT * FROM accounts WHERE id = $1`,
-            values: [from_acc]
+            text: `SELECT * FROM accounts WHERE id = $1 AND user_id = $2`,
+            values: [from_acc, userId]
         })
 
         const fromAccount = fromAccountResult.rows[0];
-        if (!fromAccountResult.rows[0]) {
+        if (!fromAccount) {
             res.status(400).send({
                 status: "Failed",
                 message: "Invalid account information"
@@ -298,9 +309,11 @@ export const transferMoneyToAccount = async (req: AuthRequest, res: any) => {
             return;
         }
 
+        // Transfers are between the same user's own accounts (the frontend
+        // only ever offers the caller's own accounts as the destination).
         const toAccountResult = await pool.query({
-            text: `SELECT * FROM accounts WHERE id = $1`,
-            values: [to_acc]
+            text: `SELECT * FROM accounts WHERE id = $1 AND user_id = $2`,
+            values: [to_acc, userId]
         })
         const toAccount = toAccountResult.rows[0];
         if (!toAccount) {
@@ -311,33 +324,41 @@ export const transferMoneyToAccount = async (req: AuthRequest, res: any) => {
             return;
         }
 
-        await pool.query("BEGIN");
+        const client = await pool.connect();
+        try {
+            await client.query("BEGIN");
 
-        await pool.query({
-            text: `UPDATE accounts SET acc_balance = acc_balance - $1, updatedAt = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *`,
-            values: [newAmount, from_acc]
-        });
+            await client.query({
+                text: `UPDATE accounts SET acc_balance = acc_balance - $1, updatedAt = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *`,
+                values: [newAmount, from_acc]
+            });
 
-        await pool.query({
-            text: `UPDATE accounts SET acc_balance = acc_balance + $1,updatedAt = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *`,
-            values: [newAmount, to_acc]
-        });
+            await client.query({
+                text: `UPDATE accounts SET acc_balance = acc_balance + $1,updatedAt = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *`,
+                values: [newAmount, to_acc]
+            });
 
-        const descriptionT = `Transfer from ${fromAccount.acc_name} - ${toAccount.acc_name}`;
+            const descriptionT = `Transfer from ${fromAccount.acc_name} - ${toAccount.acc_name}`;
 
-        await pool.query({
-            text: `INSERT INTO transactions (user_id,description,type,status,amount,source) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-            values: [userId, descriptionT, "expense", "completed", amount, fromAccount.acc_name]
-        });
+            await client.query({
+                text: `INSERT INTO transactions (user_id,description,type,status,amount,source) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+                values: [userId, descriptionT, "expense", "completed", amount, fromAccount.acc_name]
+            });
 
-        const descriptionR = `Received from ${fromAccount.acc_name} - ${toAccount.acc_name}`;
+            const descriptionR = `Received from ${fromAccount.acc_name} - ${toAccount.acc_name}`;
 
-        await pool.query({
-            text: `INSERT INTO transactions (user_id,description,type,status,amount,source) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-            values: [userId, descriptionR, "income", "completed", amount, toAccount.acc_name]
-        });
+            await client.query({
+                text: `INSERT INTO transactions (user_id,description,type,status,amount,source) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+                values: [userId, descriptionR, "income", "completed", amount, toAccount.acc_name]
+            });
 
-        await pool.query("COMMIT");
+            await client.query("COMMIT");
+        } catch (error) {
+            await client.query("ROLLBACK");
+            throw error;
+        } finally {
+            client.release();
+        }
 
         res.status(201).send({
             status: "Success",
@@ -345,14 +366,9 @@ export const transferMoneyToAccount = async (req: AuthRequest, res: any) => {
         })
 
     } catch (error) {
-        if (error instanceof Error) {
-            await pool.query("ROLLBACK");
-
-            res.status(400).send({
-                status: "Failed",
-                message: "Transaction Failed!!" + error.message
-            });
-            return;
-        }
+        res.status(400).send({
+            status: "Failed",
+            message: "Transaction Failed!!" + (error instanceof Error ? error.message : "")
+        });
     }
 }

@@ -20,8 +20,6 @@ interface DataTableProps<TData> {
   buttonName?: string;
 }
 
-/* eslint-disable react-hooks/exhaustive-deps */
-
 export function DataTable<TData>({
   columns,
   data,

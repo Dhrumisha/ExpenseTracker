@@ -1,4 +1,4 @@
-import { Request, Response } from "express"
+import { Response } from "express"
 import pool from "../config/db";
 import { AuthRequest } from "../middleware/authMiddleware";
 
@@ -36,13 +36,16 @@ export const getAllAccount = async (req: AuthRequest, res: Response) => {
     }
 }
 
-export const getAccount = async (req: Request, res: Response) => {
+export const getAccount = async (req: AuthRequest, res: Response) => {
     try {
         const { id } = req.params;
+        const userId = req.userId;
 
+        // Scoped to user_id too, otherwise any signed-in user could read
+        // another user's account by guessing its numeric id.
         const account = await pool.query({
-            text: `SELECT * FROM accounts WHERE id = $1`,
-            values: [id]
+            text: `SELECT * FROM accounts WHERE id = $1 AND user_id = $2`,
+            values: [id, userId]
         });
         if (!account.rows[0]) {
             res.status(400).json({
