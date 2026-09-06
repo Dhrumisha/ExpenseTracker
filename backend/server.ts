@@ -48,8 +48,17 @@ app.use((req: Request, res: Response) => {
 })
 
 pool.connect()
-    .then(() => console.log("Connected to PostgreSQL database........"))
-    .catch(err => console.error("Connection error", err.stack));
+    .then(() =>
+        console.log(
+            `Connected to PostgreSQL at ${process.env.PGHOSTNAME}/${process.env.PGDATABASE}`
+        )
+    )
+    .catch((err) =>
+        console.error(
+            `Connection error (${process.env.PGHOSTNAME}/${process.env.PGDATABASE}):`,
+            err.message
+        )
+    );
 
 // Vercel (and other serverless hosts) import this module and call the
 // exported handler directly — they never run app.listen(). Only bind a real
