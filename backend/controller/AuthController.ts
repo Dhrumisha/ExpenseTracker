@@ -73,6 +73,7 @@ export const SignUpUser = async (req: Request, res: Response) => {
             data: user.rows[0],
         });
     } catch (error) {
+        console.error("Signup failed:", error);
         res.status(500).json({
             status: "Failed",
             message: "Signup failed",
@@ -141,13 +142,12 @@ export const SignInUser = async (req: Request, res: Response) => {
             },
         });
     } catch (error) {
-        if (error instanceof Error) {
-            res.status(500).json({
-                status: "Failed",
-                message: "Login failed",
-            });
-        }
-    };
+        console.error("Login failed:", error);
+        res.status(500).json({
+            status: "Failed",
+            message: "Login failed",
+        });
+    }
 };
 
 export const LogoutUser = async (_req: Request, res: Response) => {
