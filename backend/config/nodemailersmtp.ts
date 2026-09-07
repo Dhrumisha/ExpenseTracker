@@ -12,7 +12,7 @@ const sendEmail = async (options: { email: String; subject: String; message: Str
         })
 
         const mailOption : {} = {
-            from: "Dhrumisha Rakholiya <dhumi02@gmail.com>",
+            from: process.env.EMAIL_FROM || "Expense Tracker <onboarding@resend.dev>",
             to: options.email,
             subject: options.subject,
             text: options.message,
