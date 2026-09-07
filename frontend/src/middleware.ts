@@ -54,13 +54,14 @@ export function middleware(req: NextRequest) {
   }
 
   const isPublic = isPublicRoute(pathname);
+  const hasValidSession = !!accessToken && !isTokenExpired(accessToken);
 
   // ---------------------------
   // PUBLIC ROUTES
   // ---------------------------
   if (isPublic) {
     // Redirect logged-in users away from sign-in
-    if (pathname === ROUTES.auth.signIn && accessToken) {
+    if (pathname === ROUTES.auth.signIn && hasValidSession) {
       return NextResponse.redirect(
         new URL(ROUTES.admin.overview, req.url)
       );
@@ -68,8 +69,11 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Optional: block expired access token
-  if (accessToken && isTokenExpired(accessToken)) {
+  // Every other route (including "/") requires a valid, non-expired
+  // session. Previously a *missing* token (as opposed to an expired one)
+  // fell through this check entirely and served protected pages
+  // unauthenticated - e.g. /admin/overview rendered with no cookie at all.
+  if (!hasValidSession) {
     return NextResponse.redirect(
       new URL(ROUTES.auth.signIn, req.url)
     );
@@ -79,13 +83,8 @@ export function middleware(req: NextRequest) {
   // ROOT HANDLING
   // ---------------------------
   if (pathname === ROUTES.root) {
-    if (accessToken) {
-      return NextResponse.redirect(
-        new URL(ROUTES.admin.overview, req.url)
-      );
-    }
     return NextResponse.redirect(
-      new URL(ROUTES.auth.signIn, req.url)
+      new URL(ROUTES.admin.overview, req.url)
     );
   }
 
