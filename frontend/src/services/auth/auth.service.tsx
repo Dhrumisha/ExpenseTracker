@@ -14,12 +14,13 @@ export interface SignUpResponse {
 }
 
 export interface SignInResponse {
+  status: string;
   message: string;
-  success: boolean;
-  token: string;
-  data?: {
+  user: {
+    id: number;
+    firstname: string;
+    lastname: string;
     email: string;
-    password: string;
   };
 }
 
@@ -47,7 +48,7 @@ export async function SignUpForm(
 
 export async function SignInForm(
   payload: SignInFormType
-): Promise<SignUpResponse> {
+): Promise<SignInResponse> {
   try {
     const res = await axiosInstance.post("/auth/sign-in", payload);
     return res.data;

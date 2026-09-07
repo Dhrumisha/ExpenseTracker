@@ -29,9 +29,9 @@ export default function SignIn() {
 
       dispatch(
         login({
-          firstname: data.data.firstname,
-          lastname: data.data.lastname,
-          email: data.data.email,
+          firstname: data.user.firstname,
+          lastname: data.user.lastname,
+          email: data.user.email,
         })
       );
     },
