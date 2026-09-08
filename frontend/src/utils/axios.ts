@@ -1,15 +1,13 @@
 import axios from "axios";
 
-if (!process.env.NEXT_PUBLIC_BASE_URL) {
-  // Surfaces misconfiguration loudly at build/runtime instead of silently
-  // requesting "http://<origin>/undefined/..." for every API call.
-  console.error(
-    "NEXT_PUBLIC_BASE_URL is not set — API requests will fail. See .env.example."
-  );
-}
-
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  // Relative, same-origin path. next.config.ts rewrites this to the real
+  // backend server-side, so the browser only ever talks to this app's own
+  // origin — which is what lets the httpOnly auth cookies (set on whatever
+  // origin answers the request) actually reach our middleware. Calling the
+  // backend's own domain directly here would set the cookie on that other
+  // domain instead, invisible to this app.
+  baseURL: "/api/v1",
   // The access/refresh tokens are httpOnly cookies, so the browser sends
   // them automatically — no Authorization header needs to be attached here.
   withCredentials: true,
