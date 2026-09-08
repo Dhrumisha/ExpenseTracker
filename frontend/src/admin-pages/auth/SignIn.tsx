@@ -3,14 +3,17 @@
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { Formik } from "formik";
+import { LogIn } from "lucide-react";
 
 import Input from "@/components/Input/CommonInput";
+import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/admin-pages/routes";
 import { SignInForm } from "@/services/auth/auth.service";
 import { SignInSchema } from "@/utils/validations/auth/authvalidationSchema";
 import { toast } from "react-toastify";
 import { useAppDispatch } from "@/redux";
 import { login } from "@/redux/slices/userSlice";
+import { AuthShell } from "./AuthShell";
 
 interface SignInFormType {
   email: string;
@@ -29,9 +32,9 @@ export default function SignIn() {
 
       dispatch(
         login({
-          firstname: data.data.firstname,
-          lastname: data.data.lastname,
-          email: data.data.email,
+          firstname: data.user.firstname,
+          lastname: data.user.lastname,
+          email: data.user.email,
         })
       );
     },
@@ -46,59 +49,67 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+    <AuthShell
+      title="Welcome back"
+      description="Sign in to see where your money's been."
+      footer={
+        <>
+          Don&apos;t have an account?{" "}
+          <a
+            href={ROUTES.auth.signUp}
+            className="font-medium text-primary underline-offset-4 hover:underline"
+          >
+            Sign up
+          </a>
+        </>
+      }
+    >
       <Formik
         initialValues={initialValues}
         validationSchema={SignInSchema}
         onSubmit={(values) => signInMutation(values)}
       >
         {({ values, handleSubmit }) => (
-          <form
-            onSubmit={handleSubmit}
-            className="w-full max-w-md rounded-lg bg-surface p-6 shadow"
-          >
-            <h1 className="mb-4 text-2xl font-semibold text-center">Sign In</h1>
-
+          <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               formik
               label="Email"
               name="email"
               type="email"
+              placeholder="you@example.com"
               defaultValue={values.email}
             />
-            <Input
-              formik
-              label="Password"
-              name="password"
-              type="password"
-              defaultValue={values.password}
-            />
-            <div className="mt-2 text-right">
-              <a
-                href={ROUTES.auth.forgotPassword}
-                className="text-sm text-blue-600 hover:underline"
-              >
-                Forgot password?
-              </a>
+            <div>
+              <Input
+                formik
+                label="Password"
+                name="password"
+                type="password"
+                placeholder="••••••••"
+                defaultValue={values.password}
+              />
+              <div className="mt-2 text-right">
+                <a
+                  href={ROUTES.auth.forgotPassword}
+                  className="text-sm text-muted-foreground hover:text-primary hover:underline"
+                >
+                  Forgot password?
+                </a>
+              </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={isPending}
-              className="mt-4 w-full rounded bg-black py-2 text-white hover:bg-gray-800 disabled:opacity-50"
-            >
-              {isPending ? "Signing in..." : "Sign In"}
-            </button>
-
-            <p className="mt-4 text-center text-sm">
-              Don’t have an account?{" "}
-              <a href={ROUTES.auth.signUp} className="text-blue-600 underline">
-                Sign up
-              </a>
-            </p>
+            <Button type="submit" disabled={isPending} className="w-full">
+              {isPending ? (
+                "Signing in..."
+              ) : (
+                <>
+                  Sign In <LogIn />
+                </>
+              )}
+            </Button>
           </form>
         )}
       </Formik>
-    </div>
+    </AuthShell>
   );
 }
