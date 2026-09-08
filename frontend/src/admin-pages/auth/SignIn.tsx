@@ -27,16 +27,21 @@ export default function SignIn() {
   const { mutate: signInMutation, isPending } = useMutation({
     mutationFn: SignInForm,
     onSuccess: (data) => {
-      toast.success(data.message);
-      router.push(ROUTES.admin.overview);
+      const user = data.user;
+      if (!user) {
+        toast.error("Sign in succeeded but user details were missing");
+        return;
+      }
 
       dispatch(
         login({
-          firstname: data.user.firstname,
-          lastname: data.user.lastname,
-          email: data.user.email,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          email: user.email,
         })
       );
+      toast.success(data.message);
+      router.push(ROUTES.admin.overview);
     },
     onError: (error: Error) => {
       toast.error(error.message || "Unable to sign in");

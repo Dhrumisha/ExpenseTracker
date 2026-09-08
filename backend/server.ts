@@ -19,14 +19,25 @@ const allowedOrigins = (process.env.FRONTEND_URL ?? "http://localhost:3000")
     .map((origin) => origin.trim().replace(/\/$/, ""))
     .filter(Boolean);
 
+const localDevOrigins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+];
+
 app.use(cors({
     origin(origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
         // Allow non-browser requests (no Origin header, e.g. health checks/curl)
-        if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
+        if (!origin) {
             callback(null, true);
-        } else {
-            callback(new Error(`Origin ${origin} is not allowed by CORS`));
+            return;
         }
+        const normalized = origin.replace(/\/$/, "");
+        const allowed =
+            allowedOrigins.includes(normalized) ||
+            (process.env.NODE_ENV !== "production" && localDevOrigins.includes(normalized));
+        // Never throw: a thrown error becomes HTTP 500 and the browser
+        // reports a failed preflight with no CORS headers.
+        callback(null, allowed);
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { CookieOptions, Request, Response } from "express";
 import pool from "../config/db";
 import {
     comparePassword,
@@ -8,10 +8,14 @@ import {
     passwordFormat,
 } from "../config";
 
-const COOKIE_OPTIONS = {
+// Localhost is HTTP, so Secure+SameSite=None cookies are dropped by the
+// browser and Next.js middleware never sees accessToken → bounce to sign-in.
+// Production (HTTPS, often a different API host) still needs None+Secure.
+const isProd = process.env.NODE_ENV === "production";
+const COOKIE_OPTIONS: CookieOptions = {
     httpOnly: true,
-    secure: true,          // 🔥 MUST be true in production
-    sameSite: "none" as const, // 🔥 REQUIRED for cross-site cookies
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
     path: "/",
 };
 
